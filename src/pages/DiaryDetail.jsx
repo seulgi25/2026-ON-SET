@@ -28,6 +28,12 @@ function DiaryDetail(){
         );
     }
 
+    const findPlayer = (playerId) => {
+        return diary.entry?.find((player) => player.id === playerId);
+    }
+
+    const liberoPlayer = findPlayer(diary.startingLineup?.libero);
+
     return(
         <>
             <Header />
@@ -64,6 +70,105 @@ function DiaryDetail(){
                         <strong className="detail_team">{diary.opponent}</strong>
                     </div>
                 </section>
+                
+                {/*경기 엔트리*/}
+                {diary.entry?.length > 0 && (
+                    <section className="detail_entry">
+                        <h2>경기 엔트리</h2>
+
+                        <div className="detail_entry_list">
+                            {diary.entry.map((player) => (
+                                <div className="detail_entry_player" key={player.id}>
+                                    <span className="detail_entry_number">{player.number}</span>
+                                    <p>{player.name}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/*스타팅 라인업 */}
+                {diary.startingLineup && (
+                    <section className="detail_starting">
+                        <h2>스타팅 라인업</h2>
+
+                        <div className="detail_starting_list">
+                            {[4, 3, 2, 5, 6, 1].map((position) => {
+                                const player = findPlayer(
+                                    diary.startingLineup[`position${position}`]
+                                );
+
+                                return(
+                                    <div className="detail_starting_player" key={position}>
+                                        <p>{player?.name}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        <div className="detail_libero">
+                            <p>{liberoPlayer?.name}</p>
+                        </div>
+                    </section>
+                )}
+
+                {/*선수 교체*/}
+                {diary.substitutions?.length > 0 && (
+                    <section className="detail_substitutions">
+                        <h2>선수 교체</h2>
+
+                        <div className="detail_substitution_list">
+                            {diary.substitutions.map((substitution) => {
+                                const outPlayer = findPlayer(substitution.outPlayer);
+                                const inPlayer = findPlayer(substitution.inPlayer);
+
+                                return(
+                                    <div
+                                        className="detail_substitution"
+                                        key={substitution.id}
+                                    >
+                                        <span>
+                                            {substitution.set}세트 -{" "}
+                                            {substitution.myScore} :{" "}
+                                            {substitution.opponentScore}
+                                        </span>
+
+                                        <p>
+                                            {outPlayer?.name}
+                                            {" → "}
+                                            {inPlayer?.name}
+                                        </p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </section>
+                )}
+
+                {/*세트별 흐름*/}
+                {diary.setFlow?.length > 0 &&(
+                    <section className="detail_setflow">
+                        <h2>세트별 흐름</h2>
+
+                        <div className="detail_setflow_list">
+                            {diary.setFlow.map((set) => (
+                                <div className="detail_setflow_item" key={set.set}>
+                                    <div className="detail_setflow_top">
+                                        <span>{set.set}세트</span>
+
+                                        <strong>
+                                            {set.myScore} : {set.opponentScore}
+                                        </strong>
+                                    </div>
+
+                                    {set.memo && (
+                                        <p>{set.memo}</p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 {/*경기 일기와 기록*/}
                 <section className="detail_grid">

@@ -169,6 +169,212 @@
     color: #172554;
 }
 
+/*경기 엔트리*/
+.detail_entry{
+    margin-top: 24px;
+    padding: 24px;
+    background-color: white;
+    border-radius: 12px;
+}
+
+.detail_entry h2{
+    margin: 0 0 16px;
+}
+
+.detail_entry_list{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.detail_entry_number{
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: #eff6ff;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.detail_entry_player{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+}
+
+.detail_entry_player p{
+    margin: 0;
+    white-space: nowrap;
+}
+
+/*스타팅 라인업*/
+.detail_starting{
+    margin-top: 24px;
+    padding: 24px;
+    background-color: white;
+    border-radius: 12px;
+}
+
+.detail_starting h2{
+    margin: 0 0 20px;
+}
+
+.detail_starting_list{
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    max-width: 600px;
+    min-height: 260px;
+    margin: 0 auto;
+    background-color: #f8fafc;
+    border: 2px solid #1a2b44;
+    border-radius: 8px;
+}
+
+.detail_starting_list::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    border-top: 1px solid #cbd5e1;
+}
+
+.detail_starting_player{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 16px;
+    text-align: center;
+}
+
+.detail_starting_player p{
+    margin: 0;
+    color: #172554;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.detail_libero{
+    max-width: 600px;
+    margin-top: 16px auto 0;
+    text-align: center;
+}
+
+.detail_libero p{
+    margin: 6px 0;
+    color: #172554;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/*선수교체*/
+.detail_substitutions{
+    margin-top: 24px;
+    padding: 24px;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.detail_substitutions h2{
+    margin: 0 0 16px;
+    font-size: 20px;
+    color: #172554;
+}
+
+.detail_substitutions_list{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.detail_substitution{
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 16px;
+    background-color: #f8fafc;
+    border-radius: 10px;
+}
+
+.detail_substitution span{
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.detail_substitution p{
+    margin: 0;
+    color: #1e293b;
+    font-size: 15px;
+}
+
+/*세트별 흐름*/
+.detail_setflow{
+    margin: 24px 0;
+    padding: 24px;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.detail_setflow h2{
+    margin: 0 0 16px;
+    font-size: 20px;
+    color: #172554;
+}
+
+.detail_setflow_list{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail_setflow_item{
+    padding: 18px 20px;
+    background-color: #f8fafc;
+    border-radius: 10px;
+}
+
+.detail_setflow_top{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.detail_setflow_top span{
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.detail_setflow_top strong{
+    color: #172554;
+    font-size: 18px;
+}
+
+.detail_setflow_item p{
+    margin: 12px 0 0;
+    color: #334155;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .detail_entry_list{
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .detail_score {
         gap: 16px;
@@ -185,4 +391,10 @@
     .detail_grid {
         grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 600px) {
+    .detail_entry_list{
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
