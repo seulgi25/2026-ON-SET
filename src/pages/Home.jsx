@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
-import MoodCard from "../components/MoodCard";
+import HomePreMatchSection from "../components/HomePreMatchSection";
 import DiaryCard from "../components/DiaryCard";
 import "./Home.css";
 
@@ -46,7 +46,7 @@ function Home(){
                 </section>
 
                 <section className="home-grid">
-                    <MoodCard />
+                    <HomePreMatchSection />
 
                     <section className="home-card">
                         <div className="section-title section-title-between">

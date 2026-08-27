@@ -168,57 +168,54 @@
   color: #2563eb;
 }
 
-
-/*무드카드*/
-
-.mood-card {
-  min-height: 220px;
-  padding: 26px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  text-align: center;
-  
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-
-  color: #172554;
-}
-
-.mood-card__label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #64748b;
-}
-
-.mood-card__emoji {
-  margin: 18px 0 8px;
-  font-size: 40px;
-}
-
-.mood-card h3 {
-  margin: 0;
-
-  font-size: 22px;
-  color: #172554;
-}
-
-.mood-card p {
-  margin: 12px 0 0;
-
-  font-size: 14px;
-  line-height: 1.6;
-  color: #64748b;
-}
-
+/*기본*/
 .home-card > .secondary-button {
   width: 100%;
   margin-top: 12px;
+}
+
+/*경기 전 카드 뽑은 후*/
+.home_precard_preview{
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 18px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.home_precard_preview img{
+  width: 130px;
+  height: auto;
+  flex-shrink: 0;
+  display: block;
+}
+
+.home_precard_info {
+  flex: 1;
+}
+
+.home_precard_info > span {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.home_precard_info h3{
+  margin: 6px 0 10px;
+  font-size: 19px;
+  color: #172554;
+}
+
+.home_precard_keywords{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.home_precard_keywords span{
+  font-size: 12px;
+  color: #64748b;
 }
 
 
@@ -266,6 +263,24 @@
   text-decoration: none;
 }
 
+.precard_empty{
+  min-height: 150px;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.precard_empty p{
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #64748b;
+}
 
 /*반응형*/
 
