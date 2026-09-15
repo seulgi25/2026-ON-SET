@@ -6,7 +6,7 @@ import "./Archive.css";
 
 function Archive(){
     //저장된 일기 불러오기
-    const [diaries] = useState(() => {
+    const [diaries, setDiaries] = useState(() => {
         const savedDiaries = localStorage.getItem("diaries");
 
         if (savedDiaries) {
@@ -22,6 +22,22 @@ function Archive(){
         }
         return diary.viewingType === filter;
     });
+
+    const handleDelete = (id) => {
+        const isConfirmed = window.confirm("이 경기 기록을 삭제하시겠습니까?");
+        if (!isConfirmed){
+            return;
+        }
+        const updatedDiaries = diaries.filter(
+            (diary) => diary.id !== id
+        );
+
+        localStorage.setItem(
+            "diaries",
+            JSON.stringify(updatedDiaries)
+        );
+        setDiaries(updatedDiaries);
+    }
 
     return (
         <>
@@ -72,13 +88,30 @@ function Archive(){
                         </div>
                     ) : (
                         filteredDiaries.map((diary) => (
-                            <Link
-                                key={diary.id}
-                                to={`/diary/${diary.id}`}
-                                className="diary_link"
-                            >
-                                <DiaryCard diary={diary} />
-                            </Link>
+                            <div className="archive_item" key={diary.id}>
+                                <Link to = {`/diary/${diary.id}`}
+                                    className="diary_link"
+                                >
+                                    <DiaryCard diary={diary} />
+                                </Link>
+
+                                <div className="archive_actions">
+                                    <Link
+                                        to={`/diary/edit/${diary.id}`}
+                                        className="archive_edit"
+                                    >
+                                        수정
+                                    </Link>
+
+                                    <button
+                                        type="button"
+                                        className="archive_delete"
+                                        onClick={() => handleDelete(diary.id)}
+                                    >
+                                        삭제
+                                    </button>
+                                </div>
+                            </div>
                         ))
                     )}
                 </section>

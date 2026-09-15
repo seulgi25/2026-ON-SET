@@ -1,5 +1,5 @@
 import { useState} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import "./DiaryWrite.css";
 
@@ -25,39 +25,84 @@ const emotions=[
     "해체해라",
 ];
 
+//포지션
+const positions = [
+    "세터",
+    "아웃사이드히터",
+    "아포짓스파이커",
+    "미들블로커",
+    "리베로",
+];
+
 const courtPositions = [4,3,2,5,6,1];
 
+const createEmptyDiary = () => ({
+    //기본 정보
+    date: "",
+    myTeam:"",
+    opponent: "",
+    viewingType: "",
+    result: "",
+    myScore: "",
+    opponentScore: "",
+
+    //상세 정보
+    entry: [],
+    startingLineup: {
+        position1: "",
+        position2: "",
+        position3: "",
+        position4: "",
+        position5: "",
+        position6: "",
+        libero: ""
+    },
+    substitutions: [],
+    setFlow: [],
+
+    //감정 기록
+    emotion: "",
+    player: "",
+    momentSet: "",
+    moment: "",
+    content: "",
+});
+
 function DiaryWrite(){
+    const { id } = useParams();
+    const isEditMode = Boolean(id);
     //경기 일기 입력값
-    const [diary, setDiary] = useState({
-        //기본 정보
-        date:"",
-        myTeam:"",
-        opponent: "",
-        viewingType: "",
-        result: "",
-        myScore: "",
-        opponentScore:"",
+    const [diary, setDiary] = useState(() => {
+        const emptyDiary = createEmptyDiary();
 
-        //상세 정보
-        entry: [],
-        startingLineup: {
-            position1:"",
-            position2:"",
-            position3:"",
-            position4:"",
-            position5:"",
-            position6:"",
-            libero:"",
-        },
-        substitutions: [],
-        setFlow: [],
+        if (!isEditMode) {
+            return emptyDiary;
+        }
 
-        //감정 기록
-        emotion: "",
-        player: "",
-        moment: "",
-        content:"",
+        const savedDiaries = JSON.parse(localStorage.getItem("diaries")) || [];
+        
+        const savedDiary = savedDiaries.find(
+            (diary) => String(diary.id) === id
+        );
+
+        if (!savedDiary){
+            return emptyDiary;
+        }
+
+        return {
+            ...emptyDiary,
+            ...savedDiary,
+
+            startingLineup: {
+                ...emptyDiary.startingLineup,
+                ...(savedDiary.startingLineup || {}),
+            },
+
+            entry: savedDiary.entry || [],
+            substitutions: savedDiary.substitutions || [],
+            setFlow: savedDiary.setFlow || [],
+            momentSet: savedDiary.momentSet || "",
+        };
     });
 
     const navigate = useNavigate();
@@ -125,6 +170,7 @@ function DiaryWrite(){
                     id: crypto.randomUUID(),
                     number:"",
                     name:"",
+                    position:"",
                 }
             ],
         }));
@@ -254,18 +300,28 @@ function DiaryWrite(){
         //기존 저장된 경기 일기 불러오기
         const savedDiaries = JSON.parse(localStorage.getItem("diaries")) || [];
         
-        //새로 저장한 경기 일기
-        const newDiary = {
-            ...diary,
-            id: Date.now(),
-            createdAt: new Date().toISOString(),
-        };
+        let updatedDiaries;
 
-        //기존 기록에 새로운 기록 추가
-        const updatedDiaries = [
-            ...savedDiaries,
-            newDiary,
-        ];
+        if (isEditMode){
+            updatedDiaries = savedDiaries.map((savedDiary) =>
+                String(savedDiary.id) === id ?{
+                    ...diary, id: savedDiary.id,
+                    createdAt: savedDiary.createdAt,
+                    updatedAt: new Date().toISOString(),
+                } : savedDiary
+            );
+        } else {
+            const newDiary = {
+                ...diary,
+                id: Date.now(),
+                createdAt: new Date().toISOString(),
+            };
+
+            updatedDiaries = {
+                ...savedDiaries,
+                newDiary,
+            };
+        }
 
         //localStroage
         localStorage.setItem("diaries", JSON.stringify(updatedDiaries));
@@ -281,8 +337,10 @@ function DiaryWrite(){
             <main className="diarywrite">
                 {/*제목*/}
                 <div className="diarywrite_header">
-                    <h1>경기 일기 작성</h1>
-                    <p>오늘 본 경기의 기억과 감정을 남겨보세요.</p>
+                    <h1>{isEditMode ? "경기 일기 수정" : "경기 일기 작성"}</h1>
+                    <p>
+                        {isEditMode ? "기록한 경기의 내용을 수정해보세요." : "오늘 본 경기의 기억과 감정을 남겨보세요."}
+                    </p>
                 </div>
 
                 {/*경기 일기 입력*/}
@@ -466,6 +524,24 @@ function DiaryWrite(){
                                                 )
                                             }
                                         />
+
+                                        <select
+                                            className="entry_position"
+                                            value={player.position}
+                                            onChange={(e) => handleEntryChange(
+                                                index,
+                                                "position",
+                                                e.target.value
+                                            )}
+                                        >
+                                            <option value="">포지션 선택</option>
+
+                                            {positions.map((position) => (
+                                                <option key={position} value={position}>
+                                                    {position}
+                                                </option>
+                                            ))}
+                                        </select>
 
                                         <button
                                             type="button"
@@ -803,14 +879,30 @@ function DiaryWrite(){
                                 기억에 남는 장면
                             </label>
 
-                            <input
-                                id = "moment"
-                                type = "text"
-                                name = "moment"
-                                placeholder="오늘 경기에서 가장 기억에 남는 순간은?"
-                                value={diary.moment}
-                                onChange={handleChange}
-                            />
+                            <div className = "moment_input">
+                                <select
+                                    className="moment_set"
+                                    name="momentSet"
+                                    value={diary.momentSet}
+                                    onChange={handleChange}
+                                >
+                                    <option value="">세트 선택</option>
+                                    <option value="1">1세트</option>
+                                    <option value="2">2세트</option>
+                                    <option value="3">3세트</option>
+                                    <option value="4">4세트</option>
+                                    <option value="5">5세트</option>
+                                </select>
+
+                                <input
+                                    id = "moment"
+                                    type = "text"
+                                    name = "moment"
+                                    placeholder="오늘 경기에서 가장 기억에 남는 순간은?"
+                                    value={diary.moment}
+                                    onChange={handleChange}
+                                />
+                            </div>
                         </div>
 
                         {/*경기 일기*/}
@@ -833,7 +925,7 @@ function DiaryWrite(){
                     {/*저장버튼*/}
                     <div className="save_area">
                         <button type="submit" className="save_button">
-                            기록 저장하기
+                            {isEditMode ? "수정 완료하기" : "기록 저장하기"}
                         </button>
                     </div>
                 </form>

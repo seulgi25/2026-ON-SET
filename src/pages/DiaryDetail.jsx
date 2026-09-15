@@ -28,6 +28,18 @@ function DiaryDetail(){
         );
     }
 
+    const positionLabels = {
+        세터: "S",
+        아웃사이드히터: "OH",
+        아포짓스파이커: "OP",
+        미들블로커: "MB",
+        리베로: "L",
+    };
+
+    const getPositionLabel = (position) => {
+        return positionLabels[position] || position;
+    }
+
     const findPlayer = (playerId) => {
         return diary.entry?.find((player) => player.id === playerId);
     }
@@ -80,7 +92,15 @@ function DiaryDetail(){
                             {diary.entry.map((player) => (
                                 <div className="detail_entry_player" key={player.id}>
                                     <span className="detail_entry_number">{player.number}</span>
-                                    <p>{player.name}</p>
+                                    
+                                    <div className="detail_entry_info">
+                                        <p>{player.name}</p>
+                                        {player.position && (
+                                            <span className="detail_entry_position">
+                                                {getPositionLabel(player.position)}
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -101,6 +121,12 @@ function DiaryDetail(){
                                 return(
                                     <div className="detail_starting_player" key={position}>
                                         <p>{player?.name}</p>
+
+                                        {player?.position && (
+                                            <span className="detail_starting_position">
+                                                {getPositionLabel(player.position)}
+                                            </span>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -108,6 +134,12 @@ function DiaryDetail(){
 
                         <div className="detail_libero">
                             <p>{liberoPlayer?.name}</p>
+
+                            {liberoPlayer?.position && (
+                                <span className="detail_starting_position">
+                                    {getPositionLabel(liberoPlayer.position)}
+                                </span>
+                            )}
                         </div>
                     </section>
                 )}
@@ -198,7 +230,14 @@ function DiaryDetail(){
 
                         <div className="detail_item">
                             <span>기억에 남는 장면</span>
-                            <p>{diary.moment || "기록 없음"}</p>
+                            {diary.moment ? (
+                                <p>
+                                    {diary.momentSet && `${diary.momentSet}세트 - `}
+                                    {diary.moment}
+                                </p>
+                            ) :(
+                                <p>기록 없음</p>
+                            )}
                         </div>
                     </aside>
                 </section>

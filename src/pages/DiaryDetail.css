@@ -213,6 +213,20 @@
     white-space: nowrap;
 }
 
+.detail_entry_info{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.detail_entry_position{
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
 /*스타팅 라인업*/
 .detail_starting{
     margin-top: 24px;
@@ -262,9 +276,19 @@
     font-weight: 600;
 }
 
+.detail_starting_position{
+    margin-top: 4px;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 .detail_libero{
-    max-width: 600px;
-    margin-top: 16px auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 14px auto 0;
     text-align: center;
 }
 

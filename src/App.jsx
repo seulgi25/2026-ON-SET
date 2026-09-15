@@ -12,6 +12,7 @@ function App(){
       <Route path="/diary/write" element={<DiaryWrite />}/>
       <Route path="/archive" element={<Archive />}/>
       <Route path="/diary/:id" element={<DiaryDetail/>}/>
+      <Route path="/diary/edit/:id" element={<DiaryWrite />} />
       <Route path="/cards/pre-match" element={<PreMatchCardDraw />} />
     </Routes>
   );
