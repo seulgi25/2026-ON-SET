@@ -9,10 +9,11 @@ function Archive(){
     const [diaries, setDiaries] = useState(() => {
         const savedDiaries = localStorage.getItem("diaries");
 
-        if (savedDiaries) {
-            return JSON.parse(savedDiaries);
+        if (!savedDiaries) {
+            return [];
         }
-        return [];
+        const parsedDiaries = JSON.parse(savedDiaries);
+        return Array.isArray(parsedDiaries) ? parsedDiaries : [];
     });
 
     const [filter, setFilter] = useState("전체");
